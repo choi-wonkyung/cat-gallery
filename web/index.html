@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>🐱 오늘의 고양이 🐱</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap');
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-07@1.0/IBMPlexSansKR-Text.woff') format('woff');
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansMedium.woff');
+        @import url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-04@2.1/NEXON Lv1 Gothic OTF.woff');
+
+        /* 기본 설정 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Gaegu', cursive;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #fff0f5;
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 미니홈피 메인 컨테이너 */
+        .miniroom {
+            background-color: rgba(255, 255, 255, 0.98);
+            width: 1000px;
+            max-width: 95%;
+            border: 1px solid #ffd1dc;
+            border-radius: 20px;
+            box-shadow: 0 2px 15px rgba(255, 182, 193, 0.15);
+            overflow: hidden;
+        }
+
+        /* 헤더 영역 */
+        .header {
+            background-color: #ffb6c1;
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ffd1dc;
+        }
+
+        .header-title {
+            font-size: 1.3em;
+        }
+
+        .today-counter {
+            background-color: rgba(255, 255, 255, 0.15);
+            padding: 10px 20px;
+            font-size: 1.1em;
+            border-radius: 15px;
+        }
+
+        /* 메뉴 탭 */
+        .menu-bar {
+            display: flex;
+            margin: 25px 30px 0;
+            gap: 3px;
+            border-bottom: 1px solid #ffd1dc;
+            padding-bottom: 0;
+        }
+
+        .menu-item {
+            padding: 15px 40px;
+            font-size: 1.15em;
+            border: 1px solid #ffd1dc;
+            border-bottom: none;
+            background-color: #fff8fa;
+            color: #888;
+            cursor: pointer;
+            border-radius: 15px 15px 0 0;
+        }
+
+        .menu-item.active {
+            background-color: #ffb6c1;
+            color: white;
+            border-color: #ffb6c1;
+        }
+
+        /* 컨텐츠 영역 */
+        .content {
+            display: flex;
+            padding: 25px 30px;
+            gap: 25px;
+            align-items: flex-start;
+        }
+
+        /* 프로필 섹션 */
+        .profile-section {
+            width: 280px;
+            background-color: #fff8fa;
+            border: 1px solid #ffd1dc;
+            border-radius: 15px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: sticky;
+            top: 25px;
+        }
+
+        .profile-title {
+            color: #ff8da1;
+            text-align: center;
+            font-size: 1.25em;
+            padding: 5px 0 15px;
+            border-bottom: 1px solid #ffd1dc;
+            margin: 0;
+        }
+
+        .profile-info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            color: #666;
+            font-size: 1.15em;
+            padding: 10px 0;
+        }
+
+        .profile-info p {
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .cool-cat-section {
+            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #ffd1dc;
+            background-color: white;
+            padding: 15px;
+        }
+
+        .cool-cat-img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
+
+        .cool-cat-img:hover {
+            transform: scale(1.03);
+        }
+
+        /* 이미지 대신 이모지 사용 */
+        .cool-cat-section::after {
+            content: '😎🐱';
+            display: block;
+        }
+
+        /* 메인 섹션 */
+        .main-section {
+            flex: 1;
+            background-color: #fff8fa;
+            border: 1px solid #ffd1dc;
+            border-radius: 15px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            min-height: 600px;
+        }
+
+        h2 {
+            color: #ff8da1;
+            text-align: center;
+            font-size: 1.4em;
+            margin: 0;
+            padding: 5px 0;
+        }
+
+        .image-container {
+            width: 100%;
+            height: 450px;
+            border: 1px solid #ffd1dc;
+            background-color: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        #catImage {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 버튼 스타일 */
+        button {
+            background-color: #ffb6c1;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin: 5px auto 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-radius: 25px;
+        }
+
+        button:hover {
+            background-color: #ff9caa;
+            transform: translateY(-2px);
+        }
+
+        .paw-left, .paw-right {
+            font-size: 0.9em;
+            transition: transform 0.3s ease;
+        }
+
+        button:hover .paw-left {
+            transform: rotate(-15deg);
+        }
+
+        button:hover .paw-right {
+            transform: rotate(15deg);
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .profile-section {
+                position: static;
+                width: 100%;
+            }
+
+            .menu-item {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+
+            .image-container {
+                height: 350px;
+            }
+
+            .profile-info {
+                gap: 12px;
+            }
+
+            .cool-cat-section {
+                max-height: 200px;
+                overflow: hidden;
+            }
+        }
+
+        .heart-btn.playing {
+            background-color: #ffb6c1;
+            color: white;
+            transform: scale(0.95);
+        }
+
+        /* 스티커 버튼 스타일 */
+        .sticker-btn {
+            background-color: #fff;
+            border: 2px solid #ffb6c1;
+            border-radius: 15px;
+            padding: 10px 20px;
+            color: #ff8da1;
+            font-size: 0.95em;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .sticker-btn:hover {
+            background-color: #ffb6c1;
+            color: white;
+        }
+
+        /* 스티커 스타일 */
+        .cat-sticker {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-20px) rotate(10deg);
+            }
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        .error-box {
+            background-color: #f0f0f0;
+            border: 1px solid #999;
+            border-radius: 3px;
+            box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+            font-size: 0.9em;
+            margin-bottom: 0;
+        }
+
+        .error-header {
+            background: linear-gradient(to bottom, #fff 0%, #e3e3e3 100%);
+            padding: 8px 10px;
+            border-bottom: 1px solid #999;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .error-title {
+            color: #333;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .error-close {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 0.9em;
+            padding: 0 5px;
+        }
+
+        .error-close:hover {
+            color: #000;
+        }
+
+        .error-content {
+            padding: 15px;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        /* 닫기 버튼 기능 */
+        .error-box.hidden {
+            display: none;
+        }
+
+        /* 배경 스타일 수정 */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #fff0f5;
+            font-family: 'NEXON Lv1 Gothic OTF', sans-serif;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 떠다니는 도트 하트 스타일 */
+        .floating-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .pixel-heart {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #ffb6c1;
+            opacity: 0.6;
+            clip-path: path('M12 21.593c-5.63-5.539-11-10.297-11-14.402 0-3.791 3.068-5.191 5.281-5.191 1.312 0 4.151.501 5.719 4.457 1.59-3.968 4.464-4.447 5.726-4.447 2.54 0 5.274 1.621 5.274 5.181 0 4.069-5.136 8.625-11 14.402m5.726-20.583c-2.203 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248-3.183 0-6.281 2.187-6.281 6.191 0 4.661 5.571 9.429 12 15.809 6.43-6.38 12-11.148 12-15.809 0-4.011-3.095-6.181-6.274-6.181');
+            animation: float 20s linear infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) scale(1) rotate(0deg);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) scale(0.8) rotate(360deg);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="moving-bg"></div>
+    <div class="miniroom">
+        <div class="header">
+            <div class="header-title">🐱 고양이의 미니홈피</div>
+            <div class="today-counter">TODAY 1 | TOTAL 100</div>
+        </div>
+        <div class="content">
+            <div class="profile-section">
+                <div class="profile-title">⭐ PROFILE ⭐</div>
+                <div class="profile-info">
+                    <p>❤ 고양이 덕후 ❤</p>
+                    <p>매일 새로운 고양이를</p>
+                    <p>만나보세요!</p>
+                </div>
+                <button class="sticker-btn">✨ 고양이 스티커 뿌리기 ✨</button>
+                <div class="cool-cat-section">
+                    <img src="catcat.jpg" alt="Happy Cat with Headphones" class="cool-cat-img">
+                </div>
+                <div class="error-box">
+                    <div class="error-header">
+                        <div class="error-title">❗ 시스템 메시지</div>
+                        <button class="error-close">✕</button>
+                    </div>
+                    <div class="error-content">
+                        험난한 세상.....사람은 싫고 귀여운 고양이 사진을 보며 마음의 평화 심신의 안정...과제할 결심....오직 나를 위해서
+                    </div>
+                </div>
+            </div>
+            <div class="main-section">
+                <div class="menu-bar">
+                    <div class="menu-item active">홈</div>
+                    <div class="menu-item">사진첩</div>
+                    <div class="menu-item">방명록</div>
+                </div>
+                <h2>오늘의 고양이</h2>
+                <div class="image-container">
+                    <img id="catImage" src="" alt="랜덤 고양이 사진">
+                </div>
+                <button onclick="loadNewCat()">
+                    <span class="paw-left">🐾</span>
+                    야옹
+                    <span class="paw-right">🐾</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadNewCat() {
+            fetch('https://api.thecatapi.com/v1/images/search')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('catImage').src = data[0].url;
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        loadNewCat();
+
+        // 메뉴 활성화 기능
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+                this.classList.add('active');
+            });
+        });
+
+        // 고양이 소리 버튼 관련 JavaScript
+        document.addEventListener('DOMContentLoaded', function() {
+            const catSounds = [
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-1.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-2.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-3.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/purr-1.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/purr-2.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-4.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-5.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-6.mp3',
+                'https://raw.githubusercontent.com/matthewwong525/cat-sounds-api/main/audio/meow-7.mp3'
+            ];
+
+            // 각 버튼 클릭시 새로운 Audio 객체 생성 및 재생
+            document.querySelectorAll('.heart-btn').forEach((btn, index) => {
+                btn.addEventListener('click', async () => {
+                    try {
+                        const audio = new Audio(catSounds[index]);
+                        await audio.play();
+                        
+                        // 버튼 애니메이션
+                        btn.classList.add('playing');
+                        setTimeout(() => {
+                            btn.classList.remove('playing');
+                        }, 200);
+                    } catch (error) {
+                        console.error("오디오 재생 실패:", error);
+                    }
+                });
+            });
+        });
+
+        const catStickers = [
+            '🐱', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾'
+        ];
+
+        document.querySelector('.sticker-btn').addEventListener('click', function() {
+            // 스티커 생성
+            const sticker = document.createElement('div');
+            sticker.className = 'cat-sticker';
+            
+            // 랜덤 스티커 선택
+            const randomSticker = catStickers[Math.floor(Math.random() * catStickers.length)];
+            sticker.innerHTML = randomSticker;
+            
+            // 랜덤 위치 설정
+            const x = Math.random() * (window.innerWidth - 50);
+            const y = Math.random() * (window.innerHeight - 50);
+            
+            // 스타일 설정
+            sticker.style.left = x + 'px';
+            sticker.style.top = y + 'px';
+            sticker.style.fontSize = '30px';
+            
+            // 랜덤 애니메이션 지연 시간
+            sticker.style.animationDelay = Math.random() * 2 + 's';
+            
+            // 문서에 추가
+            document.body.appendChild(sticker);
+            
+            // 일정 시간 후 제거 (메모리 관리)
+            setTimeout(() => {
+                sticker.remove();
+            }, 8000);
+        });
+
+        // 닫기 버튼 기능
+        document.querySelector('.error-close').addEventListener('click', function() {
+            document.querySelector('.error-box').classList.add('hidden');
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.createElement('div');
+            container.className = 'floating-hearts';
+            document.body.appendChild(container);
+
+            // 초기 하트 생성
+            for (let i = 0; i < 15; i++) {
+                createHeart();
+            }
+
+            function createHeart() {
+                const heart = document.createElement('div');
+                heart.className = 'pixel-heart';
+                
+                // 랜덤 위치와 크기
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                heart.style.animationDelay = (Math.random() * 10) + 's';
+                heart.style.transform = `scale(${Math.random() * 0.5 + 0.5})`;
+                
+                container.appendChild(heart);
+
+                // 애니메이션 종료 후 제거 및 새로운 하트 생성
+                heart.addEventListener('animationend', function() {
+                    heart.remove();
+                    createHeart();
+                });
+            }
+        });
+    </script>
+</body>
+</html> 
